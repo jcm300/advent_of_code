@@ -31,9 +31,10 @@ for line in file_data.readlines():
 # Get answer
 my_seat = None
 seat_ids_sorted = sorted(seat_ids)
+n = len(seat_ids_sorted)
 
 for i, seat_id in enumerate(seat_ids_sorted):
-    if seat_id + 1 != seat_ids_sorted[i + 1]:
+    if i + 1 < n and seat_id + 1 != seat_ids_sorted[i + 1]:
         my_seat = seat_id + 1
         break
 
