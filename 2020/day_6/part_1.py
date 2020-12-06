@@ -17,7 +17,7 @@ group = []
 for line in file_data.readlines():
     line = line.replace('\n', '')
     if line == '':
-        groups.append(list(group))
+        groups.append(group)
         group = []
     else:
         group += [c for c in line if c not in group]
