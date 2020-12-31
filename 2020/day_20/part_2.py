@@ -99,8 +99,8 @@ def neighbour_tiles(t1, i, tiles, notin=[]):
 
     return ret
 
-# Convert grid to str without borders
-def str_img(grid):
+# Convert grid to a simple one without borders
+def simple_grid(grid):
     lg = len(grid)
     lb = len(grid[0][0][0]) - 2 # minus first and last line
     l = lg * lb
@@ -111,9 +111,13 @@ def str_img(grid):
             for w in range(lb):
                 aux[i*lb + w] += grid[i][j][w+1][1:-1] # +1 ignores first line, and ignore first and last value of each line
 
+    return aux
+
+# Convert a simple grid to str
+def str_img(grid):
     str_img = ''
 
-    for a in aux:
+    for a in grid:
         str_img += ''.join(a) + '\n'
 
     return str_img
@@ -164,4 +168,28 @@ for i in range(l):
                     grid_ids[i+1][j] = pt['t']
                     grid[i+1][j] = pt['tl']
 
-str_image = str_img(grid)
+s_grid = simple_grid(grid)
+flip_s_grid = flip(s_grid)
+llines = len(s_grid)
+lcols = len(s_grid[0])
+sea_monsters = []
+
+# possible image combs
+for g in [s_grid, rotate_left(s_grid), rotate_180(s_grid), rotate_right(s_grid),
+          flip_s_grid, rotate_left(flip_s_grid), rotate_180(flip_s_grid), rotate_right(flip_s_grid)]:
+    sea_m = 0
+
+    # Find sea monsters
+    for i, line in enumerate(g):
+        for j, c in enumerate(line):
+            if (j + 19 < lcols and i + 2 < lcols and
+                g[i][j+18] == '#' and
+                g[i+1][j] == '#' and g[i+1][j+5] == '#' and g[i+1][j+6] == '#' and g[i+1][j+11] == '#' and g[i+1][j+12] == '#' and g[i+1][j+17] == '#' and g[i+1][j+18] == '#' and g[i+1][j+19] == '#' and
+                g[i+2][j+1] == '#' and g[i+2][j+4] == '#' and g[i+2][j+7] == '#' and g[i+2][j+10] == '#' and g[i+2][j+13] == '#' and g[i+2][j+16] == '#'):
+                sea_m += 1
+
+    if sea_m:
+        sea_monsters.append(sea_m)
+
+answer = str_img(s_grid).count('#') - (max(sea_monsters) * 15)
+print(answer)
