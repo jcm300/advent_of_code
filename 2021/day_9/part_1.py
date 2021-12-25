@@ -19,7 +19,7 @@ matrix = []
 
 for line in file_data.readlines():
     l = line.replace('\n', '')
-    matrix.append(list(l))
+    matrix.append(list(map(int, l)))
 
 #
 # Get answer
